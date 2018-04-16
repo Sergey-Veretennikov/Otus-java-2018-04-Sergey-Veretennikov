@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="ProjectModuleManager">
-    <modules>
-      <module fileurl="file://$PROJECT_DIR$/L01.1-maven/L01.1-maven.iml" filepath="$PROJECT_DIR$/L01.1-maven/L01.1-maven.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/Otus-java-2018-04-Sergey-Veretennikov.iml" filepath="$PROJECT_DIR$/.idea/Otus-java-2018-04-Sergey-Veretennikov.iml" />
-    </modules>
-  </component>
-</project>
