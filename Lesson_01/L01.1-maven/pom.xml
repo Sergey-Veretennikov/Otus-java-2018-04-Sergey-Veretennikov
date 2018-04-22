@@ -103,19 +103,18 @@
                 <configuration>
                     <proguardVersion>6.0.2</proguardVersion>
                     <obfuscate>true</obfuscate>
-                    <outjar>L01.2.1-release.jar</outjar>
+                    <outjar>L01.1-maven-proguard-release.jar</outjar>
 
                     <options>
-                        <option>-keep public class ru.otus.l0111.Main {public static void main(java.lang.String[]);}</option>
+                        <option>-keep public class ru.otus.l011.Main {public static void main(java.lang.String[]);}</option>
                         <option>-dontwarn</option>
                     </options>
 
                 </configuration>
             </plugin>
-    
+
         </plugins>
 
     </build>
-
 
 </project>
