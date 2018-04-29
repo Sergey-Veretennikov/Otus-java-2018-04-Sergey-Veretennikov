@@ -1,4 +1,3 @@
-
 package ru.otus.l022;
 
 import org.junit.Test;
