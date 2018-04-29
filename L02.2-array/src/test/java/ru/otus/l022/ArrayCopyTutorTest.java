@@ -52,6 +52,8 @@ public class ArrayCopyTutorTest {
     }
 
     public void deleteAnimal(int position) {
+        System.arraycopy(animals, position + 1, animals, position, animals_size - position);
+        animals_size--;
     }
 
     public void showAnimals() {
@@ -73,8 +75,8 @@ public class ArrayCopyTutorTest {
         addAnimal("Тигр");
         addAnimal("Кошка");
         addAnimal("Черепаха");
-        insertAnimal(1, "Человек");
-        //deleteAnimal(2);
+        //insertAnimal(1, "Человек");
+        deleteAnimal(2);
         showAnimals();
     }
 }
