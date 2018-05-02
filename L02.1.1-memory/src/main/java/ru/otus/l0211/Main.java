@@ -1,5 +1,8 @@
 package ru.otus.l0211;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.function.Supplier;
 
 import org.jetbrains.annotations.NotNull;
@@ -13,11 +16,16 @@ public class Main {
     public static final int SIZE = 100_000;
 
     public static void main(String[] args) {
+        printUsage(() -> new Object(), "Object");
+        printUsage(() -> new MyClass(), "myclass");
+        printUsage(() -> new Integer(1), "1");
+        printUsage(() -> new String("string"), "String \"string\"");
+        printUsage(String::new,"String \" \"");
+        printUsage(() -> Calendar.getInstance(), "Calendar");
+        printUsage(() -> new BigDecimal("999999999999999.999"), "BigDecimal 999999999999999.999");
+        printUsage(() -> new ArrayList<String>(), "ArrayList<String>");
+        printUsage(() -> new Integer[100], "Integer[100]");
 
-        printUsage(String::new, "Empty string");
-        printUsage(Object::new, "Empty object");
-        //printUsage(,"");
-        //Integer
     }
 
     /**
@@ -30,20 +38,20 @@ public class Main {
         Runtime runtime = Runtime.getRuntime();
 
         runtime.gc();
-        // TODO: почему меряем usedAfter-usedBefore, а не freeBefore - freeAfter?
         long memBefore = runtime.totalMemory() - runtime.freeMemory();
         for (int i = 0; i < SIZE; i++) {
             objs[i] = supplier.get();
         }
 
-        // TODO: Зачем второй gc?
         runtime.gc();
         long memAfter = runtime.totalMemory() - runtime.freeMemory();
-        System.out.println(String.format("\n%-30s\tSIZEOF(): %d bytes\n", comment, Math.round((double) (memAfter - memBefore) / SIZE)));
+        System.out.println(String.format("\n%-20s\tSIZEOF(): %d bytes\n", comment, Math.round((double) (memAfter - memBefore) / SIZE)));
 
-        // TODO: Avoid optimization
         return objs;
-//        return null;
     }
 
+    private static class MyClass {
+        private int i = 0;
+        private long l = 1;
+    }
 }
