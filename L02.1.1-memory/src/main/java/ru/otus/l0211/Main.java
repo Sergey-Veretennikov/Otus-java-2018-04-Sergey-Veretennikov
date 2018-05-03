@@ -19,8 +19,8 @@ public class Main {
         printUsage(() -> new Object(), "Object");
         printUsage(() -> new MyClass(), "myclass");
         printUsage(() -> new Integer(1), "1");
-        printUsage(() -> new String("string"), "String \"string\"");
-        printUsage(String::new,"String \" \"");
+        printUsage(() -> new String(new char[]{'s', 't', 'r', 'i', 'n', 'g'}), "String \"string\"");
+        printUsage(String::new, "String \" \"");
         printUsage(() -> Calendar.getInstance(), "Calendar");
         printUsage(() -> new BigDecimal("999999999999999.999"), "BigDecimal 999999999999999.999");
         printUsage(() -> new ArrayList<String>(), "ArrayList<String>");
