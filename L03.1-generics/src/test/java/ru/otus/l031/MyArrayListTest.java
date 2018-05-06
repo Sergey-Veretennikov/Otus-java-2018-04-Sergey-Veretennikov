@@ -2,6 +2,7 @@ package ru.otus.l031;
 
 import org.junit.Test;
 
+import java.security.InvalidParameterException;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -32,9 +33,17 @@ public class MyArrayListTest {
     @Test
     public void collections_sort() {
         MyArrayList<String> src = new MyArrayList<>();
+        Comparator<String> comparator = new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                if (o1 == null || o2 == null) throw new InvalidParameterException();
+                return o1.compareTo(o2);
+            }
+        };
+
         Collections.addAll(src, "Item2", "Item3", "Item4", "Item1");
 
-        Collections.sort(src);
+        Collections.sort(src, comparator);
 
         assertArrayEquals(new String[]{"Item1", "Item2", "Item3", "Item4"}, src.toArray());
     }
