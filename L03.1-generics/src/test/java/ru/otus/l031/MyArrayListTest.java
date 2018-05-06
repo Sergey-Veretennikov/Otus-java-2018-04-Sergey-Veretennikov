@@ -42,9 +42,7 @@ public class MyArrayListTest {
         };
 
         Collections.addAll(src, "Item2", "Item3", "Item4", "Item1");
-
         Collections.sort(src, comparator);
-
         assertArrayEquals(new String[]{"Item1", "Item2", "Item3", "Item4"}, src.toArray());
     }
 }
