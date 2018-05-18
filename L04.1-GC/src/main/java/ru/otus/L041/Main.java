@@ -29,7 +29,7 @@ public class Main {
 
         Object[] arrays = new Object[arraysCount];
         for (int i = 0; i < arrays.length; i++) {
-            arrays[i] = new Object[i * 100000];
+            arrays[i] = new Object[i * 1000];
             fillArray((Object[]) arrays[i]);
             if (i > cleanWindowSize) arrays[i - cleanWindowSize] = null;
         }
