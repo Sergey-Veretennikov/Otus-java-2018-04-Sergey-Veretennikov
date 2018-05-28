@@ -6,6 +6,7 @@ import ru.otus.L051.annotations.Test;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class TestInfo {
@@ -29,15 +30,15 @@ public class TestInfo {
     }
 
     public List<Method> getBeforeMethods() {
-        return beforeMethods;
+        return Collections.unmodifiableList(beforeMethods);
     }
 
     public List<Method> getTestMethods() {
-        return testMethods;
+        return Collections.unmodifiableList(testMethods);
     }
 
     public List<Method> getAfterMethods() {
-        return afterMethods;
+        return Collections.unmodifiableList(afterMethods);
     }
 
     public Class getClazz() {
