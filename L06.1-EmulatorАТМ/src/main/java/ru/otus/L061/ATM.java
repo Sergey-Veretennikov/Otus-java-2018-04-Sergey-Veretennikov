@@ -13,9 +13,16 @@ public class ATM {
     private Map<Denomination, Cell> cells = new HashMap<>();
 
     public void loadMoney(Denomination nominal, int count) {
-        Cell cell = new Cell(nominal, count);
-        cells.put(cell.getNominal(), cell);
-        balance += cell.getNominal().getValue() * cell.getCount();
+        if (cells.containsKey(nominal)) {
+            Cell c = cells.get(nominal);
+            c.setCount(c.getCount() + count);
+            cells.put(c.getNominal(), c);
+            balance += c.getNominal().getValue() * count;
+        } else {
+            Cell cell = new Cell(nominal, count);
+            cells.put(cell.getNominal(), cell);
+            balance += cell.getNominal().getValue() * cell.getCount();
+        }
     }
 
     public int infoBalance() {
@@ -24,8 +31,9 @@ public class ATM {
 
     public List<Integer> giveMoney(int amount) throws InsufficientFundsException, InvalidAmountException {
 
-        if (amount > balance) throw new InsufficientFundsException();
-        if (!checkPossibilityOfRelease(amount)) throw new InvalidAmountException();
+        if (amount > balance) throw new InsufficientFundsException("Недостаточно Средств");
+        if (!checkPossibilityOfRelease(amount))
+            throw new InvalidAmountException("Нет подходящего номинала для выдачи запрашиваемой суммы ");
 
         List<Integer> result = new ArrayList<>();
         balance -= amount;
