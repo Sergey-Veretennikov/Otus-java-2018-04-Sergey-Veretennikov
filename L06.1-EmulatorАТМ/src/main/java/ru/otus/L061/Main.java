@@ -7,16 +7,16 @@ public class Main {
     public static void main(String[] args) throws InsufficientFundsException, InvalidAmountException {
         ATM atm = new ATM();
 
-        atm.loadMoney(Denomination._50, 100);
-        atm.loadMoney(Denomination._100, 100);
-        atm.loadMoney(Denomination._200, 100);
-        atm.loadMoney(Denomination._500, 100);
-        atm.loadMoney(Denomination._500, 15);
-        atm.loadMoney(Denomination._2000, 100);
-        atm.loadMoney(Denomination._5000, 100);
+        atm.loadMoney(Denomination.Fifty, 100);
+        atm.loadMoney(Denomination.Hundred, 100);
+        atm.loadMoney(Denomination.TwoHundred, 100);
+        atm.loadMoney(Denomination.FiveHundred, 100);
+        atm.loadMoney(Denomination.FiveHundred, 15);
+        atm.loadMoney(Denomination.TwoThousand, 100);
+//        atm.loadMoney(Denomination.FiveThousand, 100);
 
         System.out.println(atm.infoBalance());
-        System.out.println(atm.giveMoney(4520));
+        System.out.println(atm.giveMoney(4500));
         System.out.println(atm.infoBalance());
     }
 }
