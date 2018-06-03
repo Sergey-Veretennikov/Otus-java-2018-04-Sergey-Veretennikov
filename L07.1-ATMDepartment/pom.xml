@@ -10,6 +10,14 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>L06.1-Emulator АТМ</artifactId>
+    <artifactId>L07.1-ATM Department</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>ru.otus</groupId>
+            <artifactId>L06.1-Emulator АТМ</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 </project>
