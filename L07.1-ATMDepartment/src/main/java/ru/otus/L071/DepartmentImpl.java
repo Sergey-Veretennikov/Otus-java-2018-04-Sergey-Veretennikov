@@ -1,16 +1,14 @@
 package ru.otus.L071;
 
 import ru.otus.L061.ATM;
+import ru.otus.L071.mementos.AtmMemento;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DepartmentImpl implements Department {
-    private final List<ATM> atms;
-
-    public DepartmentImpl() {
-        this.atms = new ArrayList<>();
-    }
+    private List<ATM> atms = new ArrayList<>();
+    private final AtmMemento atmMemento = new AtmMemento();
 
     @Override
     public void addATM(ATM atm) {
@@ -39,6 +37,16 @@ public class DepartmentImpl implements Department {
             return atms.get(nomer);
         else
             return null;
+    }
+
+    @Override
+    public void restoreInitialState() {
+        atms = atmMemento.getAtmMemento();
+    }
+
+    @Override
+    public AtmMemento getDepartmAtmMemento() {
+        return atmMemento;
     }
 
 }

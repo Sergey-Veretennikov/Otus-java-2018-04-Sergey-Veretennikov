@@ -13,7 +13,7 @@ public class Main {
         atm.loadMoney(Denomination.FiveHundred, 100);
         atm.loadMoney(Denomination.FiveHundred, 15);
         atm.loadMoney(Denomination.TwoThousand, 100);
-//        atm.loadMoney(Denomination.FiveThousand, 100);
+        atm.loadMoney(Denomination.FiveThousand, 100);
 
         System.out.println(atm.infoBalance());
         System.out.println(atm.giveMoney(4500));

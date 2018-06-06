@@ -6,5 +6,5 @@ import ru.otus.L061.Denomination;
 public interface ATMBuilder {
     ATMBuilder withCell(Denomination nominal, int count);
 
-    ATM build();
+    ATM build() throws IllegalAccessException;
 }
