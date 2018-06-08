@@ -18,5 +18,7 @@ public interface Department {
 
     void restoreInitialState();
 
+    void restoreInitialState(ATM... atms);
+
     AtmMemento getDepartmAtmMemento();
 }

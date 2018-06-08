@@ -45,8 +45,17 @@ public class DepartmentImpl implements Department {
     }
 
     @Override
+    public void restoreInitialState(ATM... atm) {
+        for (int i = 0; i < atm.length; i++) {
+            if (!atms.contains(atm[i])) break;
+            for (ATM a : atmMemento.getAtmMemento()) {
+                if (a.getNomer() == atm[i].getNomer()) atms.set(atms.indexOf(atm[i]), a);
+            }
+        }
+    }
+
+    @Override
     public AtmMemento getDepartmAtmMemento() {
         return atmMemento;
     }
-
 }

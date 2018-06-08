@@ -37,7 +37,8 @@ public class Main {
         atm2.giveMoney(1000);
         System.out.println("Баланс департамента: " + department.infoBalance());
 
-        department.restoreInitialState();
+//        department.restoreInitialState();
+        department.restoreInitialState(atm1,atm2);
         System.out.println("Начальное значение баланса департаминта: " + department.infoBalance());
     }
 }

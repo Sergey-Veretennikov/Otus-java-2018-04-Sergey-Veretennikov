@@ -9,6 +9,7 @@ import java.util.*;
 public class ATM implements Cloneable {
     private Map<Denomination, Cell> cells = new EnumMap<>(Denomination.class);
     private final List<EmptyCellObserver> emptyCellObservers = new ArrayList<>();
+    private double nomer = 0;
 
     public void loadMoney(Denomination nominal, int count) {
         if (cells.containsKey(nominal)) {
@@ -18,6 +19,7 @@ public class ATM implements Cloneable {
             Cell cell = new Cell(nominal, count);
             cells.put(cell.getNominal(), cell);
         }
+        nomer = Math.random();
     }
 
     public int infoBalance() {
@@ -29,9 +31,8 @@ public class ATM implements Cloneable {
     }
 
     public List<Integer> giveMoney(int amount) throws InsufficientFundsException, InvalidAmountException {
-        if (amount > infoBalance()) throw new InsufficientFundsException("Недостаточно Средств: " + amount);
-        if (!checkPossibilityOfRelease(amount))
-            throw new InvalidAmountException("Нет подходящего номинала для выдачи запрашиваемой суммы: " + amount);
+        if (amount > infoBalance()) throw new InsufficientFundsException(amount);
+        if (!checkPossibilityOfRelease(amount)) throw new InvalidAmountException(amount);
 
         List<Integer> result = new ArrayList<>();
 
@@ -91,5 +92,27 @@ public class ATM implements Cloneable {
             if (ob.setEmptyCellObserver().getNominal() == denomination)
                 ob.notifyCellIsEmpty();
         }
+    }
+
+    public double getNomer() {
+        return nomer;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ATM atm = (ATM) o;
+
+        if (cells != null ? !cells.equals(atm.cells) : atm.cells != null) return false;
+        return emptyCellObservers != null ? emptyCellObservers.equals(atm.emptyCellObservers) : atm.emptyCellObservers == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = cells != null ? cells.hashCode() : 0;
+        result = 31 * result + (emptyCellObservers != null ? emptyCellObservers.hashCode() : 0);
+        return result;
     }
 }

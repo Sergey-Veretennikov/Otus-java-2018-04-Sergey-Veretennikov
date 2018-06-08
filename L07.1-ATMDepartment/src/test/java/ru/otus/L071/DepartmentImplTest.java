@@ -16,7 +16,6 @@ import static org.junit.Assert.*;
 public class DepartmentImplTest {
     private Department department;
     private ATMBuilder atmBuilder;
-    private ATMBuilder atmBuilder2;
 
     @Before
     public void createTest() {
@@ -30,9 +29,9 @@ public class DepartmentImplTest {
     }
 
     @Test
-    public void addATM() {
-        department.addATM(new ATM());
-        department.addATM(new ATM());
+    public void addATM() throws IllegalAccessException {
+        department.addATM(atmBuilder.withCell(Denomination.Fifty, 1).build());
+        department.addATM(atmBuilder.withCell(Denomination.Hundred, 1).build());
         assertEquals(2, department.getATMCount());
     }
 
@@ -52,12 +51,12 @@ public class DepartmentImplTest {
 
     @Test
     public void giveMoneyDepartment() throws InsufficientFundsException, InvalidAmountException, IllegalAccessException {
-        atmBuilder2 = new ATMBuilderImpl(department);
-        department.addATM(atmBuilder2.withCell(Denomination.OneThousand, 2)
+        atmBuilder = new ATMBuilderImpl(department);
+        department.addATM(atmBuilder.withCell(Denomination.OneThousand, 2)
                 .withCell(Denomination.Fifty, 2)
                 .withCell(Denomination.TwoThousand, 2)
                 .build());
-        department.addATM(atmBuilder2.withCell(Denomination.Fifty, 1)
+        department.addATM(atmBuilder.withCell(Denomination.Fifty, 1)
                 .withCell(Denomination.Fifty, 1)
                 .build());
         ATM atm1 = department.getATM(0);
@@ -69,12 +68,12 @@ public class DepartmentImplTest {
 
     @Test
     public void restoreInitialState() throws InsufficientFundsException, InvalidAmountException, IllegalAccessException {
-        atmBuilder2 = new ATMBuilderImpl(department);
-        department.addATM(atmBuilder2.withCell(Denomination.OneThousand, 2)
+        atmBuilder = new ATMBuilderImpl(department);
+        department.addATM(atmBuilder.withCell(Denomination.OneThousand, 2)
                 .withCell(Denomination.Fifty, 2)
                 .withCell(Denomination.TwoThousand, 2)
                 .build());
-        department.addATM(atmBuilder2.withCell(Denomination.Fifty, 1)
+        department.addATM(atmBuilder.withCell(Denomination.Fifty, 1)
                 .withCell(Denomination.Fifty, 1)
                 .build());
         int balance = department.infoBalance();
@@ -83,7 +82,7 @@ public class DepartmentImplTest {
         ATM atm2 = department.getATM(1);
         atm1.giveMoney(1000);
         atm2.giveMoney(50);
-        department.restoreInitialState();
+        department.restoreInitialState(atm1, atm2);
 
         assertEquals(balance, department.infoBalance());
     }
@@ -110,6 +109,5 @@ public class DepartmentImplTest {
 
         atm.giveMoney(200);
         assertTrue(notified[0]);
-
     }
 }
