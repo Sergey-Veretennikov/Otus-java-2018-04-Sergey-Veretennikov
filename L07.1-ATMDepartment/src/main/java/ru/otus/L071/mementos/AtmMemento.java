@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AtmMemento {
-    private List<ATM> atms = new ArrayList<>();
+    private final List<ATM> atms = new ArrayList<>();
 
     public void addAtmMemento(ATM atm) {
         atms.add(atm);

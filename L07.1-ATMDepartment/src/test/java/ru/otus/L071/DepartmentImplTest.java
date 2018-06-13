@@ -8,6 +8,8 @@ import ru.otus.L061.Denomination;
 import ru.otus.L061.exception.InsufficientFundsException;
 import ru.otus.L061.exception.InvalidAmountException;
 import ru.otus.L061.observers.EmptyCellObserver;
+import ru.otus.L071.Department;
+import ru.otus.L071.DepartmentImpl;
 import ru.otus.L071.builder.ATMBuilder;
 import ru.otus.L071.builder.ATMBuilderImpl;
 
