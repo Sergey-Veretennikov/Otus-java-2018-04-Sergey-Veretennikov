@@ -5,7 +5,6 @@ import com.google.gson.reflect.TypeToken;
 import org.junit.Before;
 import org.junit.Test;
 
-
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -45,7 +44,8 @@ public class JsonSimpleObject {
     public void jsonTest() throws IllegalAccessException {
         Set<SimpleObject> set = new HashSet<>(Arrays.asList(new SimpleObject(), new SimpleObject()));
         String js = json.execJcon(set);
-        Type type = new TypeToken<Set<SimpleObject>>() {}.getType();
+        Type type = new TypeToken<Set<SimpleObject>>() {
+        }.getType();
         Set<SimpleObject> gs = gson.fromJson(js, type);
 
         assertEquals(set, gs);
@@ -56,7 +56,6 @@ public class JsonSimpleObject {
         SimpleObject item = new SimpleObject();
         String js = json.execJcon(item);
         SimpleObject gs = gson.fromJson(js, SimpleObject.class);
-
         assertEquals(item, gs);
     }
 }

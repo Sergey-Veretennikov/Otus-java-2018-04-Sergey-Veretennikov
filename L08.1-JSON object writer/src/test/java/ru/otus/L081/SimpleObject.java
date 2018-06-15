@@ -10,6 +10,7 @@ public class SimpleObject {
     private short height = 7;
     private int[] params = new int[]{1, 2, 3, 4};
     private String[] strings = new String[]{"a", "b", "c"};
+    char[] chars = new char[]{'a', 'b', 'c'};
     private List<Integer> list = new ArrayList<>(Arrays.asList(100, 200, 300));
     private Set<Long> set = new LinkedHashSet<>(Arrays.asList(3L, 6L));
     private SubItem subItem = new SubItem();

@@ -6,15 +6,17 @@ import org.json.simple.JSONValue;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Modifier;
+import java.util.*;
 
 public class Json {
 
     public String execJcon(Object o) throws IllegalAccessException {
-        if (o == null || isPrimitiveOrWrapperOrString(o.getClass())) return JSONValue.toJSONString(o);
+        if (o == null || isPrimitiveOrWrapperOrString(o.getClass())) {
+            if (o != null && o.getClass().equals(Character.class))
+                return JSONValue.toJSONString(Character.toString((Character) o));
+            return JSONValue.toJSONString(o);
+        }
         if (o.getClass().isArray() || o instanceof Iterable) {
             Iterable list = o.getClass().isArray()
                     ? arrayToList(o)
@@ -29,11 +31,17 @@ public class Json {
     }
 
     private JSONObject getMemberObjectValue(Object o) throws IllegalAccessException {
+        List<Field> fieldArray = new ArrayList<>();
+        if (o.getClass().getSuperclass() != null) {
+            Field[] f = o.getClass().getSuperclass().getDeclaredFields();
+            Collections.addAll(fieldArray, f);
+        }
         Field[] fields = o.getClass().getDeclaredFields();
+        Collections.addAll(fieldArray, fields);
         JSONObject jsonObject = new JSONObject();
 
-        for (Field field : fields) {
-            if (!field.isSynthetic()) {
+        for (Field field : fieldArray) {
+            if (!field.isSynthetic() && !Modifier.isTransient(field.getModifiers())) {
                 field.setAccessible(true);
                 String name = field.getName();
                 Object value = null;
@@ -47,9 +55,12 @@ public class Json {
                 if (value == null) {
                     jsonObject.put(name, null);
                 } else {
-                    if (isPrimitiveOrWrapperOrString(field.getType()))
-                        jsonObject.put(name, value);
-                    else {
+                    if (isPrimitiveOrWrapperOrString(field.getType())) {
+                        if (value.getClass().equals(Character.class))
+                            jsonObject.put(name, Character.toString((Character) value));
+                        else
+                            jsonObject.put(name, value);
+                    } else {
                         if (value.getClass().isArray() || value instanceof Iterable) {
                             Iterable list = value.getClass().isArray()
                                     ? arrayToList(value)
@@ -66,20 +77,24 @@ public class Json {
                 }
             }
         }
-
         return jsonObject;
     }
 
     private JSONArray buildJsonArray(Iterable collection) throws IllegalAccessException {
         JSONArray jsonArray = new JSONArray();
-
         Iterator iterator = collection.iterator();
         while (iterator.hasNext()) {
             Object item = iterator.next();
 
-            if (item == null || isPrimitiveOrWrapperOrString(item.getClass()))
-                jsonArray.add(item);
-            else {
+            if (item == null || isPrimitiveOrWrapperOrString(item.getClass())) {
+                if (item != null && item.getClass().equals(Character.class))
+                    jsonArray.add(Character.toString((Character) item));
+                else
+                    jsonArray.add(item);
+            } else if (item.getClass().isArray()) {
+                JSONArray jsArr = buildJsonArray(arrayToList(item));
+                jsonArray.add(jsArr);
+            } else {
                 JSONObject j = getMemberObjectValue(item);
                 jsonArray.add(j);
             }
@@ -89,7 +104,7 @@ public class Json {
 
     private List arrayToList(Object arr) throws IllegalAccessException {
         if (arr == null) return null;
-        if (!arr.getClass().isArray()) throw new IllegalAccessException("Ошибка массива");
+        if (!arr.getClass().isArray()) throw new ExceptionNotArray("Ошибка массива");
 
         List list = new ArrayList();
         for (int i = 0; i < Array.getLength(arr); i++) {
