@@ -15,8 +15,9 @@ public class ConnectionHelper {
                     "postgres?" +
                     "user=postgres&" +
                     "password=1&";
-
-            return DriverManager.getConnection(url);
+            Connection connection = DriverManager.getConnection(url);
+            connection.setAutoCommit(false);
+            return connection;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

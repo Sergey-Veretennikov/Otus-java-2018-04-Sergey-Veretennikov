@@ -16,5 +16,4 @@ public interface DBService extends AutoCloseable {
     String getUserName(int id);
 
     void deleteTables() throws SQLException;
-
 }

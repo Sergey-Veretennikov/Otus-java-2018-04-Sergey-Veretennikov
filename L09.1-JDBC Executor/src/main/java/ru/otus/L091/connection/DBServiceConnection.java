@@ -20,7 +20,7 @@ public class DBServiceConnection implements DBService {
             " Age INT)";
     private static final String INSERT_USER = "insert into users (Name, Age) values (?,?)";
     private static final String DELETE_USER = "drop table users";
-    private static final String SELECT_USER = "select id, name, age from users where id=%s";
+    private static final String SELECT_USER = "select id, name, age from users where id=?";
 
     public DBServiceConnection() {
         this.connection = ConnectionHelper.getConnection();
@@ -73,7 +73,6 @@ public class DBServiceConnection implements DBService {
     public <T extends DataSet> void save(T user) throws SQLException {
         try {
             PreparedExecutor exec = new PreparedExecutor(connection);
-            connection.setAutoCommit(false);
             exec.execUpdate(INSERT_USER, preparedStatement -> {
                 preparedStatement.setString(1,
                         (String) ReflectionHelper.getFieldValue(user, "name"));
@@ -93,9 +92,9 @@ public class DBServiceConnection implements DBService {
 
     @Override
     public <T extends DataSet> T load(long id, Class<T> clazz) throws SQLException {
-        TExecutor tExecutor = new TExecutor(connection);
 
-        return tExecutor.execQuery(String.format(SELECT_USER, id), resultSet -> {
+        TExecutor tExecutor = new TExecutor(connection);
+        return tExecutor.execQuery(SELECT_USER, id, resultSet -> {
             T t = (T) ReflectionHelper.createInstance(clazz.getName());
             if (resultSet.next()) {
                 do {

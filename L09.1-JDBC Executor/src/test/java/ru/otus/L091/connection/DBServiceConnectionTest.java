@@ -3,9 +3,11 @@ package ru.otus.L091.connection;
 import org.junit.*;
 import ru.otus.L091.base.DBService;
 import ru.otus.L091.base.UserDataSet;
-import ru.otus.L091.executor.TExecutor;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import static org.junit.Assert.*;
 
@@ -42,11 +44,12 @@ public class DBServiceConnectionTest {
     }
 
     @Test(expected = SQLException.class)
-    public void deleteTables() throws SQLException {
+    public void deleteTables() throws Exception {
         dbService.deleteTables();
-        TExecutor exec = new TExecutor(ConnectionHelper.getConnection());
-        exec.execQuery("SELECT * FROM users", resultSet -> {
-            return resultSet.next();
-        });
+
+        Connection connection = ConnectionHelper.getConnection();
+        Statement stmt = connection.createStatement();
+        connection.setAutoCommit(true);
+        ResultSet rs = stmt.executeQuery("SELECT * FROM users");
     }
 }

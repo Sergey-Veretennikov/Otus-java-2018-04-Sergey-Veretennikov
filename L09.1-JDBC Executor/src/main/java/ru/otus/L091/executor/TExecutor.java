@@ -1,24 +1,19 @@
 package ru.otus.L091.executor;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class TExecutor extends LogExecutor {
 
-    private final Connection connection;
-
     public TExecutor(Connection connection) {
         super(connection);
-        this.connection = connection;
     }
 
-    public <T> T execQuery(String query, TResultHandler<T> handler) throws SQLException {
-        try (Statement stmt = connection.createStatement()) {
-            stmt.execute(query);
-            ResultSet resultSet = stmt.getResultSet();
-            return handler.handle(resultSet);
+    public <T> T execQuery(String query, long id, TResultHandler<T> handler) throws SQLException {
+        try (PreparedStatement stmt = getConnection().prepareStatement(query)) {
+            stmt.setLong(1, id);
+            try (ResultSet resultSet = stmt.executeQuery()) {
+                return handler.handle(resultSet);
+            }
         }
     }
 

@@ -12,10 +12,8 @@ public class PreparedExecutor extends LogExecutor {
     }
 
     public void execUpdate(String update, ExecuteHandler prepare) {
-        try {
-            PreparedStatement stmt = getConnection().prepareStatement(update, Statement.RETURN_GENERATED_KEYS);
+        try (PreparedStatement stmt = getConnection().prepareStatement(update, Statement.RETURN_GENERATED_KEYS)) {
             prepare.accept(stmt);
-            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
