@@ -28,6 +28,21 @@ public class DBServiceConnectionTest {
     }
 
     @Test
+    public void prepareTables() throws SQLException {
+        dbService.prepareTables();
+
+        try (Connection connection = ConnectionHelper.getConnection()) {
+            try (Statement stmt = connection.createStatement()) {
+                try (ResultSet rs = stmt.executeQuery("SELECT * FROM users")) {
+                    int in = rs.getMetaData().getColumnCount();
+//                    assertEquals(3, in);
+                    assertTrue(in != 0);
+                }
+            }
+        }
+    }
+
+    @Test
     public void save() throws SQLException {
         userDataSet = new UserDataSet("QAZXSW", 159);
         dbService.save(userDataSet);
@@ -47,9 +62,12 @@ public class DBServiceConnectionTest {
     public void deleteTables() throws Exception {
         dbService.deleteTables();
 
-        Connection connection = ConnectionHelper.getConnection();
-        Statement stmt = connection.createStatement();
-        connection.setAutoCommit(true);
-        ResultSet rs = stmt.executeQuery("SELECT * FROM users");
+        try (Connection connection = ConnectionHelper.getConnection()) {
+            try (Statement stmt = connection.createStatement()) {
+                try (ResultSet rs = stmt.executeQuery("SELECT * FROM users")) {
+                    int in = rs.getMetaData().getColumnCount();
+                }
+            }
+        }
     }
 }

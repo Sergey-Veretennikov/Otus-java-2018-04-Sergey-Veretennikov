@@ -18,7 +18,7 @@ public class Main {
 //                    new UserDataSet("zxcv",50));
 //            dbService.save(new UserDataSet("qwert", 10));
 
-            System.out.println(dbService.load(2, UserDataSet.class).toString());
+//            System.out.println(dbService.load(2, UserDataSet.class).toString());
 
 //            dbService.deleteTables();
         }

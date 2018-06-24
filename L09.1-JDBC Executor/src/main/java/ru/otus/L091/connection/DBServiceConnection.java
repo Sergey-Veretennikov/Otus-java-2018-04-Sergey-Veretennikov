@@ -43,6 +43,7 @@ public class DBServiceConnection implements DBService {
     public void prepareTables() throws SQLException {
         LogExecutor logExecutor = new LogExecutor(connection);
         logExecutor.execUpdate(CREATE_TABLE_USER);
+        connection.commit();
         System.out.println("Table created");
     }
 
@@ -116,6 +117,7 @@ public class DBServiceConnection implements DBService {
     public void deleteTables() throws SQLException {
         LogExecutor logExecutor = new LogExecutor(connection);
         logExecutor.execUpdate(DELETE_USER);
+        connection.commit();
     }
 
     @Override
