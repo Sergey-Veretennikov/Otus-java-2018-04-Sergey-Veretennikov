@@ -16,14 +16,14 @@ public class DBServiceConnectionTest {
     private UserDataSet userDataSet;
 
     @Before
-    public void ConnectionHelper() throws SQLException {
+    public void connectionHelper() throws SQLException {
         dbService = new DBServiceConnection();
         System.out.println(dbService.getMetaData());
         dbService.prepareTables();
     }
 
     @After
-    public void Close() throws Exception {
+    public void close() throws Exception {
         dbService.close();
     }
 
