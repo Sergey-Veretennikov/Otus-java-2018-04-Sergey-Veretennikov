@@ -51,7 +51,7 @@ public class DbserviceImpl implements Dbservice {
         UserDataSet userDS = null;
         if (element != null) {
             userDS = element.getValue();
-            System.out.println("get no from db, id:" + id);
+            System.out.println("get not from db, id:" + id);
         }
         if (userDS == null) {
             userDS = usersDAO.load(id, UserDataSet.class);
