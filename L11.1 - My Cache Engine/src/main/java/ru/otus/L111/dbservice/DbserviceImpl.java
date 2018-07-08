@@ -16,8 +16,8 @@ public class DbserviceImpl implements Dbservice {
     private CacheEngine<Long, UserDataSet> userDStCache;
 
     public static final int MAX_ELEMENTS = 50;
-    public static final long LIFE_TIMES_MS = 10000;
-    public static final long IDLE_TIME_MS = 10000;
+    public static final long LIFE_TIMES_MS = 5000;
+    public static final long IDLE_TIME_MS = 3000;
 
     public UsersDAO getUsersDAO() {
         return usersDAO;
@@ -31,7 +31,6 @@ public class DbserviceImpl implements Dbservice {
     public void startup() {
         usersDAO = new UsersDAO(connection.getConnection());
         System.out.println(usersDAO.getMetaData());
-
         userDStCache = new CacheEngineImpl<>(MAX_ELEMENTS, LIFE_TIMES_MS, IDLE_TIME_MS, false);
     }
 
@@ -74,5 +73,9 @@ public class DbserviceImpl implements Dbservice {
     @Override
     public void shutdown() throws SQLException {
         connection.close();
+    }
+
+    public CacheEngine<Long, UserDataSet> getUserDStCache() {
+        return userDStCache;
     }
 }

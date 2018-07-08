@@ -14,8 +14,8 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws SQLException {
-//        myORM();
-        run();
+        myORM();
+//        run();
     }
 
     public static void myORM() throws SQLException {
@@ -27,6 +27,8 @@ public class Main {
             System.out.println(dbservice.read(1));
             System.out.println(dbservice.getLocalStatus());
             System.out.println(dbservice.read(1));
+
+            ((DbserviceImpl) dbservice).getUserDStCache().dispose();
         }
     }
 
@@ -61,7 +63,6 @@ public class Main {
 //        for (UserDataSet userDataSet : dataSets) {
 //            System.out.println(userDataSet);
 //        }
-
         dbservice.shutdown();
     }
 }

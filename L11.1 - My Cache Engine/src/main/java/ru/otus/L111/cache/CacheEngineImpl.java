@@ -1,5 +1,6 @@
 package ru.otus.L111.cache;
 
+import java.lang.ref.SoftReference;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Timer;
@@ -14,7 +15,7 @@ public class CacheEngineImpl<K, V> implements CacheEngine<K, V> {
     private final long idleTimeMs;
     private final boolean isEternal;
 
-    private final Map<K, CacheElement<V>> elements = new LinkedHashMap<>();
+    private final Map<K, SoftReference<CacheElement<V>>> elements = new LinkedHashMap<>();
     private final Timer timer = new Timer();
 
     private int hit = 0;
@@ -35,7 +36,7 @@ public class CacheEngineImpl<K, V> implements CacheEngine<K, V> {
             System.out.println("remove element, key:" + firstKey);
         }
 
-        elements.put(key, cacheElement);
+        elements.put(key, new SoftReference<>(cacheElement));
 
         if (!isEternal) {
             if (lifeTimeMs != 0) {
@@ -55,12 +56,11 @@ public class CacheEngineImpl<K, V> implements CacheEngine<K, V> {
         return new TimerTask() {
             @Override
             public void run() {
-                CacheElement<V> checkedCacheElement = elements.get(key);
+                CacheElement<V> checkedCacheElement = getElementFromReference(key);
                 if (checkedCacheElement == null ||
                         isT1BeforeT2(timeFunction.apply(checkedCacheElement), System.currentTimeMillis())) {
                     elements.remove(key);
                     System.out.println("timer remove, key:" + key);
-                    this.cancel();
                 }
             }
         };
@@ -71,9 +71,15 @@ public class CacheEngineImpl<K, V> implements CacheEngine<K, V> {
     }
 
 
+    private CacheElement<V> getElementFromReference(K key) {
+        SoftReference<CacheElement<V>> ref = elements.get(key);
+        CacheElement<V> cacheElement = (ref == null) ? null : ref.get();
+        return cacheElement;
+    }
+
     @Override
     public CacheElement<V> get(K key) {
-        CacheElement<V> cacheElement = elements.get(key);
+        CacheElement<V> cacheElement = getElementFromReference(key);
         if (cacheElement != null) {
             hit++;
             cacheElement.setAccessed();
@@ -98,7 +104,7 @@ public class CacheEngineImpl<K, V> implements CacheEngine<K, V> {
         timer.cancel();
     }
 
-    public int size(){
+    public int size() {
         return elements.size();
     }
 }

@@ -119,6 +119,7 @@ public class DBServiceHibernate implements Dbservice {
 
     @Override
     public void shutdown() {
+        userDStCache.dispose();
         sessionFactory.close();
     }
 }
