@@ -20,10 +20,14 @@ import java.util.function.Function;
 public class DBServiceHibernate implements Dbservice {
     private SessionFactory sessionFactory;
     private CacheEngine<Long, UserDataSet> userDStCache;
+//
+//    public static final int MAX_ELEMENTS = 50;
+//    public static final long LIFE_TIMES_MS = 5000;
+//    public static final long IDLE_TIME_MS = 3000;
 
-    public static final int MAX_ELEMENTS = 50;
-    public static final long LIFE_TIMES_MS = 5000;
-    public static final long IDLE_TIME_MS = 3000;
+    public DBServiceHibernate(CacheEngine<Long, UserDataSet> userDStCache) {
+        this.userDStCache = userDStCache;
+    }
 
     @Override
     public void startup() {
@@ -44,7 +48,7 @@ public class DBServiceHibernate implements Dbservice {
         configuration.setProperty("hibernate.enable_lazy_load_no_trans", "true");
 
         sessionFactory = crecreateSessionFactory(configuration);
-        userDStCache = new CacheEngineImpl<>(MAX_ELEMENTS, LIFE_TIMES_MS, IDLE_TIME_MS, false);
+//        userDStCache = new CacheEngineImpl<>(MAX_ELEMENTS, LIFE_TIMES_MS, IDLE_TIME_MS, false);
     }
 
     private static SessionFactory crecreateSessionFactory(Configuration configuration) {
@@ -121,13 +125,5 @@ public class DBServiceHibernate implements Dbservice {
     public void shutdown() {
         userDStCache.dispose();
         sessionFactory.close();
-    }
-
-    public int getHitCountDBser() {
-        return userDStCache.getHitCount();
-    }
-
-    public int getMissCountDBser() {
-        return userDStCache.getMissCount();
     }
 }

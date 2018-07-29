@@ -8,6 +8,8 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import ru.otus.L121.base.AddressDataSet;
 import ru.otus.L121.base.PhoneDataSet;
 import ru.otus.L121.base.UserDataSet;
+import ru.otus.L121.cache.CacheEngine;
+import ru.otus.L121.cache.CacheEngineImpl;
 import ru.otus.L121.dbservice.DBServiceHibernate;
 import ru.otus.L121.dbservice.Dbservice;
 import ru.otus.L121.webservice.AdminServlet;
@@ -19,8 +21,10 @@ public class Web {
     private final static String PUBLIC_HTML = "public_html";
 
     public static void main(String[] args) throws Exception {
+        CacheEngine<Long, UserDataSet> userDStCache = new CacheEngineImpl<>(50, 5000,
+                3000, false);
 
-        Dbservice dbservice = new DBServiceHibernate();
+        Dbservice dbservice = new DBServiceHibernate(userDStCache);
         dbservice.startup();
         String status = dbservice.getLocalStatus();
         System.out.println("Status: " + status);
@@ -32,6 +36,10 @@ public class Web {
                 new PhoneDataSet("+67 890 344 4422"));
         UserDataSet user3 = new UserDataSet("DANIEL", 456,
                 new AddressDataSet("Mira", 78), new PhoneDataSet("+67 344 4422"));
+
+        dbservice.save(user1);
+        dbservice.save(user2);
+        dbservice.save(user3);
 
         dbservice.read(2);
         dbservice.read(2);
@@ -45,9 +53,7 @@ public class Web {
         TemplateProcessor templateProcessor = new TemplateProcessor();
 
         servletContextHandler.addServlet(LoginServlet.class, "/login");
-        servletContextHandler.addServlet(new ServletHolder(new AdminServlet(templateProcessor,
-                        ((DBServiceHibernate) dbservice).getHitCountDBser(),
-                        ((DBServiceHibernate) dbservice).getMissCountDBser())),
+        servletContextHandler.addServlet(new ServletHolder(new AdminServlet(templateProcessor, userDStCache)),
                 "/admin");
 
         Server server = new Server(PORT);

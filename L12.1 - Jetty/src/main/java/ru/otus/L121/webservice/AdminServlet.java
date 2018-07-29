@@ -1,5 +1,8 @@
 package ru.otus.L121.webservice;
 
+import ru.otus.L121.base.UserDataSet;
+import ru.otus.L121.cache.CacheEngine;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,19 +13,19 @@ import java.util.Map;
 public class AdminServlet extends HttpServlet {
     private static final String ADMIN_PAGE_TEMPLATE = "admin.html";
     private final TemplateProcessor templateProcessor;
-    private int hitCount;
-    private int missCount;
+    private final CacheEngine<Long, UserDataSet> userDStCache;
 
-    public AdminServlet(TemplateProcessor templateProcessor, int hitCount, int missCount) {
+    public AdminServlet(TemplateProcessor templateProcessor, CacheEngine<Long, UserDataSet> userDStCache) {
         this.templateProcessor = templateProcessor;
-        this.hitCount = hitCount;
-        this.missCount = missCount;
+        this.userDStCache = userDStCache;
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (request.getSession().getAttribute("login") != null) {
             response.getWriter().println(getPage(request));
             new Utils().setOk(response);
+            System.out.println(userDStCache.getMissCount());
+            System.out.println(userDStCache.getHitCount());
         } else {
             response.sendRedirect("/accessDenied.html");
             new Utils().setFORBIDDEN(response);
@@ -31,7 +34,7 @@ public class AdminServlet extends HttpServlet {
 
     private String getPage(HttpServletRequest request) throws IOException {
         final Map<String, Object> pageVariables = createPageVariablesMap(request);
-        return (String) templateProcessor.getPage(ADMIN_PAGE_TEMPLATE, pageVariables);
+        return templateProcessor.getPage(ADMIN_PAGE_TEMPLATE, pageVariables);
     }
 
     private Map<String, Object> createPageVariablesMap(HttpServletRequest request) {
@@ -45,8 +48,8 @@ public class AdminServlet extends HttpServlet {
         String login = (String) request.getSession().getAttribute(LoginServlet.LOGIN_PARAMETER_NAME);
         pageVariables.put("login", login);
 
-        pageVariables.put("hitCount", hitCount);
-        pageVariables.put("missCount", missCount);
+        pageVariables.put("hitCount", userDStCache.getHitCount());
+        pageVariables.put("missCount", userDStCache.getMissCount());
 
         return pageVariables;
     }
