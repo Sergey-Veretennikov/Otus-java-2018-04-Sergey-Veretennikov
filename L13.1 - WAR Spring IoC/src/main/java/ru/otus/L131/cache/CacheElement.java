@@ -1,6 +1,5 @@
 package ru.otus.L131.cache;
 
-
 public class CacheElement<V> {
     private final V value;
     private final long creationTime;
