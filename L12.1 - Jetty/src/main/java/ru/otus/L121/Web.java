@@ -61,5 +61,6 @@ public class Web {
 
         server.start();
         server.join();
+
     }
 }
