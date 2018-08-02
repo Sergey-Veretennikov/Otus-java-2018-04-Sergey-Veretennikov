@@ -3,12 +3,12 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <bean id="userDStCache" class="ru.otus.L131.cache.CacheEngineImpl"/>
-        <!--constructor-arg name="maxElements" value="50"/>
+    <bean id="userDStCache" class="ru.otus.L131.cache.CacheEngineImpl">
+        <constructor-arg name="maxElements" value="50"/>
         <constructor-arg name="lifeTimeMs" value="5000"/>
         <constructor-arg name="idleTimeMs" value="3000"/>
-        <constructor-arg name="lifeTimeMs" value="false"/>
-    </bean-->
+        <constructor-arg name="isEternal" value="false"/>
+    </bean>
 
     <bean id="loadingDbservice" class="ru.otus.L131.LoadingDbservice">
         <constructor-arg name="userDStCache" ref="userDStCache"/>
