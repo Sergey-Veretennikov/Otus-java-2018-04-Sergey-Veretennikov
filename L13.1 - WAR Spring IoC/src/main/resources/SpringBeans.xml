@@ -10,8 +10,12 @@
         <constructor-arg name="isEternal" value="false"/>
     </bean>
 
-    <bean id="loadingDbservice" class="ru.otus.L131.LoadingDbservice">
+    <bean id="dbservice" class="ru.otus.L131.dbservice.DBServiceHibernate" init-method="startup">
         <constructor-arg name="userDStCache" ref="userDStCache"/>
+    </bean>
+
+    <bean id="loadingDbservice" class="ru.otus.L131.LoadingDbservice" init-method="run">
+        <constructor-arg name="dbservice" ref="dbservice"/>
     </bean>
 
     <bean id="templateProcessor" class="ru.otus.L131.webservice.TemplateProcessor"/>

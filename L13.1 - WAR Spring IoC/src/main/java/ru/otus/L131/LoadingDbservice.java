@@ -3,24 +3,19 @@ package ru.otus.L131;
 import ru.otus.L131.base.AddressDataSet;
 import ru.otus.L131.base.PhoneDataSet;
 import ru.otus.L131.base.UserDataSet;
-import ru.otus.L131.cache.CacheEngine;
-import ru.otus.L131.dbservice.DBServiceHibernate;
 import ru.otus.L131.dbservice.Dbservice;
 
 import java.sql.SQLException;
 
 
 public class LoadingDbservice {
-    CacheEngine<Long, UserDataSet> userDStCache;
+    Dbservice dbservice;
 
-    public LoadingDbservice(CacheEngine<Long, UserDataSet> userDStCache) throws SQLException {
-        this.userDStCache = userDStCache;
-        run();
+    public LoadingDbservice(Dbservice dbservice) {
+        this.dbservice = dbservice;
     }
 
     public void run() throws SQLException {
-        Dbservice dbservice = new DBServiceHibernate(userDStCache);
-        dbservice.startup();
         String status = dbservice.getLocalStatus();
         System.out.println("Status: " + status);
 

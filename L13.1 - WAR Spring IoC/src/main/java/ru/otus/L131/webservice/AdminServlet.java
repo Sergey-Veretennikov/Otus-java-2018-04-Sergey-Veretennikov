@@ -5,6 +5,7 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import ru.otus.L131.LoadingDbservice;
 import ru.otus.L131.base.UserDataSet;
 import ru.otus.L131.cache.CacheEngine;
+import ru.otus.L131.dbservice.Dbservice;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -20,6 +21,9 @@ public class AdminServlet extends HttpServlet {
 
     @Autowired
     private CacheEngine<Long, UserDataSet> userDStCache;
+
+    @Autowired
+    private Dbservice dbservice;
 
     @Autowired
     private LoadingDbservice loadingDbservice;
