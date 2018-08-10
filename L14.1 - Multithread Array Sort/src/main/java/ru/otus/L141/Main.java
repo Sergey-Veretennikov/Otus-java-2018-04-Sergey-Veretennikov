@@ -1,5 +1,7 @@
 package ru.otus.L141;
 
+import java.util.Arrays;
+
 public class Main {
     public static void main(String args[]) {
         int[] test1 = new int[]{1, 2, 4, 3, 10, 0, -1, 8, 6, 33, 1, 20, 5, 10, 45};
@@ -7,9 +9,6 @@ public class Main {
     }
 
     private static void printArray(int[] arr) {
-        for (int i : arr) {
-            System.out.print(i + " ");
-        }
+        System.out.println(Arrays.toString(arr));
     }
-
 }

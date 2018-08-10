@@ -32,7 +32,7 @@ public class SortArray {
 
             pLength = ((begin + pLength) < array.length) ? pLength : (array.length - begin);
 
-            Thread worker = getThread(i, begin, begin + pLength);
+            Thread worker = getThread(i, Arrays.copyOfRange(array,  begin, begin + pLength));
 
             worker.start();
             threads.add(worker);
@@ -50,10 +50,10 @@ public class SortArray {
         return new Merge(arrays).getResult();
     }
 
-    private Thread getThread(int index, int from, int to) {
+    private Thread getThread(int index, int [] arr) {
         return new Thread(() -> {
-            Arrays.sort(array, from, to);
-            arrays.set(index, Arrays.copyOfRange(array, from, to));
+            Arrays.sort(arr);
+            arrays.set(index, arr);
         });
     }
 }
